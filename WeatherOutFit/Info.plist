@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.mycompany.WeatherOutFit</string>
+	<key>Bundle Version</key>
+	<string>1.0</string>
+	<key>CFBundleName</key>
+	<string>WeatherOutfit</string>
+	<key>Bundle Short Version String</key>
+	<string>1.0</string>
+	<key>Supported Interface Orientations</key>
+	<string>We need your location to fetch the weather for your area</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to fetch the weather for your area.</string>
+</dict>
+</plist>

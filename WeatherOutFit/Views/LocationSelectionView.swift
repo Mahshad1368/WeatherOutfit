@@ -17,12 +17,18 @@ struct LocationSelectionView: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 } else if let currentLocation = locationVM.currentLocation {
                     Section(header: Text("Current Location")) {
-                        LocationRow(location: currentLocation)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                selectedLocation = currentLocation
-                                weatherVM.setLastSelectedLocation(currentLocation)
-                            }
+                        NavigationLink(
+                            destination: WeatherDetailView(location: currentLocation, gender: gender),
+                            tag: currentLocation,
+                            selection: $selectedLocation
+                        ) {
+                            LocationRow(location: currentLocation)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    selectedLocation = currentLocation
+                                    weatherVM.setLastSelectedLocation(currentLocation)
+                                }
+                        }
                     }
                 }
                 
@@ -30,12 +36,19 @@ struct LocationSelectionView: View {
                 if !weatherVM.locations.isEmpty {
                     Section(header: Text("Saved Locations")) {
                         ForEach(weatherVM.locations) { location in
-                            LocationRow(location: location)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    selectedLocation = location
-                                    weatherVM.setLastSelectedLocation(location)
-                                }
+                            NavigationLink(
+                                destination: WeatherDetailView(location: location, gender: gender),
+                                tag: location,
+                                selection: $selectedLocation
+                            ) {
+                                LocationRow(location: location)
+                                    .contentShape(Rectangle())
+                                    .onTapGesture {
+                                        selectedLocation = location
+                                        weatherVM.setLastSelectedLocation(location)
+                                    }
+                            }
+                           
                         }
                         .onDelete { indices in
                             weatherVM.locations.remove(atOffsets: indices)
@@ -56,17 +69,17 @@ struct LocationSelectionView: View {
                     weatherVM.addLocation(name: name, coordinate: coordinate, gender: gender)
                 }
             }
-            .background(
-                Group {
-                    if let location = selectedLocation {
-                        NavigationLink(
-                            destination: WeatherDetailView(location: location, gender: gender),
-                            tag: location,
-                            selection: $selectedLocation
-                        ) { EmptyView() }
-                    }
-                }
-            )
+//            .background(
+//                Group {
+//                    if let location = selectedLocation {
+//                        NavigationLink(
+//                            destination: WeatherDetailView(location: location, gender: gender),
+//                            tag: location,
+//                            selection: $selectedLocation
+//                        ) { EmptyView() }
+//                    }
+//                }
+//            )
             .alert("Error", isPresented: .constant(locationVM.error != nil)) {
                 Button("OK", role: .cancel) { locationVM.error = nil }
             } message: {
@@ -75,12 +88,11 @@ struct LocationSelectionView: View {
             .onAppear {
                 locationVM.requestLocation()
                 // If there's a last selected location, set it as the selected location
-                if let lastLocation = weatherVM.lastSelectedLocation {
-                    selectedLocation = lastLocation
-                } else if let currentLocation = locationVM.currentLocation {
-                    // If no last selected location, use the current location on first launch
-                    selectedLocation = currentLocation
-                    weatherVM.setLastSelectedLocation(currentLocation)
+                if weatherVM.locations.isEmpty && weatherVM.lastSelectedLocation == nil {
+                    if let currentLocation = locationVM.currentLocation {
+                        selectedLocation = currentLocation
+                        weatherVM.setLastSelectedLocation(currentLocation)
+                    }
                 }
             }
         }

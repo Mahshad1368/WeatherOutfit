@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		495CE54E2D9A94F20011E790 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 495CE54D2D9A94F20011E790 /* Info.plist */; };
 		495CE5712D9C1A810011E790 /* LocationSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CE5672D9C1A810011E790 /* LocationSelectionView.swift */; };
 		495CE5722D9C1A810011E790 /* LocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CE55E2D9C1A810011E790 /* LocationViewModel.swift */; };
 		495CE5732D9C1A810011E790 /* WeatherOutFitApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 495CE56C2D9C1A810011E790 /* WeatherOutFitApp.swift */; };
@@ -37,8 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4951600B2D9D1A6C00481B67 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		495CE4E82D9414060011E790 /* WeatherOutFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherOutFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		495CE54D2D9A94F20011E790 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		495CE5502D9C1A810011E790 /* Gender.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gender.swift; sourceTree = "<group>"; };
 		495CE5512D9C1A810011E790 /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		495CE5522D9C1A810011E790 /* UserPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserPreferences.swift; sourceTree = "<group>"; };
@@ -94,7 +93,6 @@
 		495CE4DF2D9414060011E790 = {
 			isa = PBXGroup;
 			children = (
-				495CE54D2D9A94F20011E790 /* Info.plist */,
 				495CE5702D9C1A810011E790 /* WeatherOutFit */,
 				495CE4FB2D9414070011E790 /* WeatherOutFitTests */,
 				495CE5052D9414070011E790 /* WeatherOutFitUITests */,
@@ -195,6 +193,7 @@
 				495CE56D2D9C1A810011E790 /* Views */,
 				495CE56E2D9C1A810011E790 /* Assets.xcassets */,
 				495CE56F2D9C1A810011E790 /* ContentView.swift */,
+				4951600B2D9D1A6C00481B67 /* Info.plist */,
 			);
 			path = WeatherOutFit;
 			sourceTree = "<group>";
@@ -262,7 +261,6 @@
 			files = (
 				495CE5892D9C1A810011E790 /* Preview Assets.xcassets in Resources */,
 				495CE58A2D9C1A810011E790 /* Assets.xcassets in Resources */,
-				495CE54E2D9A94F20011E790 /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -433,6 +431,7 @@
 				DEVELOPMENT_TEAM = 5UAB2YDZ59;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_FILE[sdk=*]" = WeatherOutFit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -462,6 +461,7 @@
 				DEVELOPMENT_TEAM = 5UAB2YDZ59;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				"INFOPLIST_FILE[sdk=*]" = WeatherOutFit/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

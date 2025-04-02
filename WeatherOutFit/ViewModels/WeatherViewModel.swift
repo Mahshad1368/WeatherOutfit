@@ -12,16 +12,33 @@ import CoreLocation
 import MapKit
 
 class WeatherViewModel: ObservableObject {
-    @Published var locations: [Location] = []
+    @Published var locations: [Location] = [] {
+        didSet {
+            saveLocations()
+        }
+    }
     @Published var isLoading = false
     @Published var error: String?
-    @Published var lastSelectedLocation: Location? // Store the last selected location
+    // Store the last selected location
+    @Published var lastSelectedLocation: Location? {
+        didSet {
+            saveLastSelectedLocation()
+        }
+    }
     private let weatherService = WeatherService()
     
     init() {
         loadLastSelectedLocation() // Load the last selected location on initialization
+        loadLocations()
     }
     private var cancellables = Set<AnyCancellable>()
+
+    func loadLocations() {
+        if let data = UserDefaults.standard.data(forKey: "savedLocations"),
+           let decoded = try? JSONDecoder().decode([Location].self, from: data) {
+            locations = decoded
+        }
+    }
     
     func addLocation(name: String, coordinate: CLLocationCoordinate2D, gender: Gender) {
         isLoading = true
@@ -70,12 +87,13 @@ class WeatherViewModel: ObservableObject {
     }
     func setLastSelectedLocation(_ location: Location) {
             lastSelectedLocation = location
-            saveLastSelectedLocation()
         }
     
     private func saveLastSelectedLocation() {
             if let location = lastSelectedLocation, let encoded = try? JSONEncoder().encode(location) {
                 UserDefaults.standard.set(encoded, forKey: "lastSelectedLocation")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "lastSelectedLocation")
             }
         }
     
@@ -87,8 +105,12 @@ class WeatherViewModel: ObservableObject {
         }
     
     func deleteLocation(at indices: IndexSet) {
+        let deletedLocations = indices.map { locations[$0]}
         locations.remove(atOffsets: indices)
-        saveLocations()
+        if let lastSelected = lastSelectedLocation, deletedLocations.contains(where: {  $0.id == lastSelected.id }) {
+            lastSelectedLocation = nil
+            saveLastSelectedLocation()
+        }
     }
     
     func refreshLocations() {
@@ -141,13 +163,6 @@ class WeatherViewModel: ObservableObject {
     private func saveLocations() {
         if let encoded = try? JSONEncoder().encode(locations) {
             UserDefaults.standard.set(encoded, forKey: "savedLocations")
-        }
-    }
-    
-    func loadLocations() {
-        if let data = UserDefaults.standard.data(forKey: "savedLocations"),
-           let decoded = try? JSONDecoder().decode([Location].self, from: data) {
-            locations = decoded
         }
     }
 }

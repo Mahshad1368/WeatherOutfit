@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "LocationViewModel.locationManagerDidChangeAuthorization(_:):LocationViewModel.swift">
+         <PersistentStrings>
+            <PersistentString
+               value = "manager.authorizationStatus">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>

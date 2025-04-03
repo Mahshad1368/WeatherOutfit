@@ -19,6 +19,8 @@ class WeatherViewModel: ObservableObject {
     }
     @Published var isLoading = false
     @Published var error: String?
+    @Published var currentWeather: WeatherResponse?
+    
     // Store the last selected location
     @Published var lastSelectedLocation: Location? {
         didSet {

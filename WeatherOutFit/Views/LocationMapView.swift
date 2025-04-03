@@ -18,12 +18,12 @@ struct LocationMapView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            // Map with selection capability
+            // نقشه
             Map(position: $locationManager.cameraPosition) {
-                // User location
+                // نمایش موقعیت کاربر
                 UserAnnotation()
                 
-                // Selected location marker
+                // نمایش موقعیت انتخاب‌شده
                 if let coordinate = selectedCoordinate {
                     Annotation("Selected", coordinate: coordinate) {
                         Image(systemName: "mappin.circle.fill")
@@ -37,11 +37,21 @@ struct LocationMapView: View {
                 MapCompass()
                 MapScaleView()
             }
+            // قابلیت کلیک روی نقشه
+            .onTapGesture(perform: { point in
+                let coordinate = convertToCoordinate(from: point)
+                selectedCoordinate = coordinate
+                // گرفتن نام شهر از مختصات (اختیاری)
+                getLocationName(from: coordinate) { name in
+                    searchText = name
+                }
+            })
+            // آپدیت region وقتی دوربین نقشه تغییر می‌کنه
             .onMapCameraChange { context in
                 locationManager.region = context.region
             }
             
-            // Search interface
+            // رابط کاربری جستجو
             VStack {
                 searchBar
                 
@@ -58,6 +68,7 @@ struct LocationMapView: View {
         }
     }
     
+    // Search Bar
     private var searchBar: some View {
         HStack {
             Image(systemName: "magnifyingglass")
@@ -76,6 +87,7 @@ struct LocationMapView: View {
         .padding()
     }
     
+    // لیست نتایج جستجو
     private var searchResultsList: some View {
         List(mapItems, id: \.self) { item in
             Button {
@@ -93,6 +105,7 @@ struct LocationMapView: View {
         .frame(height: 200)
     }
     
+    // Button "Show Weather"
     private var continueButton: some View {
         NavigationLink {
             if let coordinate = selectedCoordinate {
@@ -118,6 +131,7 @@ struct LocationMapView: View {
         .padding()
     }
     
+    // Search Location
     private func searchLocation() {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = searchText
@@ -131,6 +145,7 @@ struct LocationMapView: View {
         }
     }
     
+    // انتخاب مکان از نتایج جستجو
     private func selectLocation(_ coordinate: CLLocationCoordinate2D, name: String) {
         selectedCoordinate = coordinate
         searchText = name
@@ -139,10 +154,36 @@ struct LocationMapView: View {
             MKCoordinateRegion(
                 center: coordinate,
                 span: MKCoordinateSpan(latitudeDelta: 0.05, longitudeDelta: 0.05)
+            )
         )
-    )}
+    }
+    
+    // تبدیل نقطه کلیک‌شده به مختصات
+    private func convertToCoordinate(from point: CGPoint) -> CLLocationCoordinate2D {
+        let region = locationManager.region
+        let latDelta = region.span.latitudeDelta * Double(point.y / 300) // 300 یه مقدار تخمینیه
+        let lonDelta = region.span.longitudeDelta * Double(point.x / 300)
+        return CLLocationCoordinate2D(
+            latitude: region.center.latitude + latDelta,
+            longitude: region.center.longitude + lonDelta
+        )
+    }
+    
+    // گرفتن نام شهر از مختصات (اختیاری)
+    private func getLocationName(from coordinate: CLLocationCoordinate2D, completion: @escaping (String) -> Void) {
+        let geocoder = CLGeocoder()
+        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            if let placemark = placemarks?.first, let city = placemark.locality {
+                completion(city)
+            } else {
+                completion("Selected Location")
+            }
+        }
+    }
 }
 
+// کلاس LocationManager برای مدیریت موقعیت کاربر
 class LocationManager: NSObject, ObservableObject {
     @Published var cameraPosition: MapCameraPosition = .automatic
     @Published var region = MKCoordinateRegion(

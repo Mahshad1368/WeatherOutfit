@@ -9,11 +9,15 @@ import SwiftUI
 struct WeatherDetailView: View {
     let location: Location
     let gender: Gender
+    @State private var imageOpacity: Double = 0.0 // For Animation 
     
     var body: some View {
         ZStack {
             // Background based on weather
-            weatherBackground
+            // Character Illustration
+            Image(characterImageName)
+                .resizable()
+                .ignoresSafeArea()
             
             VStack(spacing: 20) {
                 // Weather Info
@@ -40,11 +44,7 @@ struct WeatherDetailView: View {
                         .foregroundColor(.white.opacity(0.8))
                 }
                 
-                // Character Illustration
-                Image(characterImageName)
-                    .resizable()
-                    .scaledToFit()
-                    .frame(height: 200)
+                Spacer()
                 
                 // Outfit Recommendation
                 VStack(alignment: .leading, spacing: 10) {
@@ -164,135 +164,3 @@ struct WeatherDetailView: View {
 
 
 
-
-////import SwiftUI
-////
-/////// Detailed weather view with dynamic background
-////struct WeatherDetailView: View {
-////    let location: Location
-////    let gender: Gender
-////    
-////    var body: some View {
-////        ZStack {
-////            // Dynamic background based on gender and weather
-////            weatherBackground
-////            
-////            ScrollView {
-////                VStack(spacing: 20) {
-////                    weatherInfoCard
-////                    outfitRecommendationCard
-////                }
-////                .padding()
-////            }
-////        }
-////        .navigationTitle(location.name)
-////        .navigationBarTitleDisplayMode(.inline)
-////    }
-////    
-////    // MARK: - Background View
-////    
-////    private var weatherBackground: some View {
-////        ZStack {
-////            // Fallback colors if images aren't available
-////            Color(backgroundColor)
-////                .ignoresSafeArea()
-////            
-////            // If you add images later, use:
-////           let imageName = ("\(gender.rawValue)_\(location.weatherCondition.lowercased())")
-////            if UIImage(named: imageName) != nil {
-////                Image(imageName)
-////                    .resizable()
-////                    .scaledToFill()
-////                    .ignoresSafeArea()
-////            }
-////                
-////        }
-////    }
-////    
-////    // Background color based on gender and weather
-////    private var backgroundColor: UIColor {
-////        let weatherCondition = location.weatherCondition.lowercased()
-////        
-////        switch (gender, weatherCondition) {
-////        case (.male, "sunny"): return .systemOrange
-////        case (.male, "rainy"): return .systemBlue
-////        case (.male, _): return .systemTeal
-////            
-////        case (.female, "sunny"): return .systemPink
-////        case (.female, "rainy"): return .systemPurple
-////        case (.female, _): return .systemMint
-////            
-////        case (.unisex, "sunny"): return .systemYellow
-////        case (.unisex, "rainy"): return .systemIndigo
-////        case (.unisex, _): return .systemGray
-////        }
-////    }
-////    
-////    // MARK: - Weather Info Card
-////    
-////    private var weatherInfoCard: some View {
-////        VStack(spacing: 10) {
-////            Text(location.weatherCondition)
-////                .font(.title)
-////            
-////            Text("\(Int(location.temperature))°C")
-////                .font(.system(size: 72, weight: .thin))
-////            
-////            HStack(spacing: 20) {
-////                Image(systemName: "thermometer")
-////                Text("Feels like \(Int(location.temperature))°C")
-////            }
-////            .font(.title3)
-////        }
-////        .padding()
-////        .background(Color.black.opacity(0.3))
-////        .cornerRadius(15)
-////        .foregroundColor(.white)
-////    }
-////    
-////    // MARK: - Outfit Recommendation Card
-////    
-////    private var outfitRecommendationCard: some View {
-////        VStack(alignment: .leading, spacing: 15) {
-////            Text("Recommended Outfit")
-////                .font(.title2)
-////                .bold()
-////            
-////            VStack(alignment: .leading, spacing: 8) {
-////                Text("Clothing:")
-////                    .bold()
-////                Text(outfitRecommendation.clothing)
-////            }
-////            
-////            VStack(alignment: .leading, spacing: 8) {
-////                Text("Accessories:")
-////                    .bold()
-////                Text(outfitRecommendation.accessories)
-////            }
-////        }
-////        .padding()
-////        .background(Color.black.opacity(0.3))
-////        .cornerRadius(15)
-////        .foregroundColor(.white)
-////    }
-////    
-////    // MARK: - Outfit Recommendation Logic
-////    
-////    private var outfitRecommendation: OutfitRecommendation {
-////        let weatherResponse = WeatherResponse(
-////            name: location.name,
-////            main: Main(temp: location.temperature, humidity: 0, temp_min: 0, temp_max: 0),
-////            weather: [Weather(main: location.weatherCondition, description: "", icon: location.iconCode)],
-////            wind: Wind(speed: 0, deg: 0),
-////            dt: Date().timeIntervalSince1970
-////        )
-////        
-////        return OutfitRecommender.recommendOutfit(for: weatherResponse, gender: .female)
-////    }
-////}
-//
-///// Simple outfit recommendation structure
-//
-////#Preview {
-////    WeatherDetailView()
-////}

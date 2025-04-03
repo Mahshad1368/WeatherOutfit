@@ -69,17 +69,7 @@ struct LocationSelectionView: View {
                     weatherVM.addLocation(name: name, coordinate: coordinate, gender: gender)
                 }
             }
-//            .background(
-//                Group {
-//                    if let location = selectedLocation {
-//                        NavigationLink(
-//                            destination: WeatherDetailView(location: location, gender: gender),
-//                            tag: location,
-//                            selection: $selectedLocation
-//                        ) { EmptyView() }
-//                    }
-//                }
-//            )
+
             .alert("Error", isPresented: .constant(locationVM.error != nil)) {
                 Button("OK", role: .cancel) { locationVM.error = nil }
             } message: {
@@ -106,6 +96,7 @@ struct LocationRow: View {
     var body: some View {
         HStack(spacing: 12) {
             WeatherIconView(iconCode: location.iconCode)
+              
             
             VStack(alignment: .leading, spacing: 4) {
                 Text(location.name)
@@ -130,5 +121,12 @@ struct WeatherIconView: View {
             .symbolRenderingMode(.multicolor)
             .font(.title2)
             .frame(width: 30)
-    }
+            .background(
+                            Circle()
+                                .fill(Color.black.opacity(0.1)) // Subtle background
+                                .frame(width: 40, height: 40)
+                        )
+                        .shadow(radius: 1) // Optional: adds depth
+                }
 }
+

@@ -1,4 +1,12 @@
-////
+//
+//  MapView.swift
+//  WeatherOutFit
+//
+//  Created by Mahshad Jafari on 02.04.25.
+//
+
+
+//
 ////  MapView.swift
 ////  WeatherOutFit
 ////
@@ -24,7 +32,7 @@
 //    
 //    var body: some View {
 //        Map(position: $cameraPosition) {
-//            // نمایش موقعیت‌های موجود به صورت Annotation
+‎//            // نمایش موقعیت‌های موجود به صورت Annotation
 //            ForEach(locations) { location in
 //                if let coordinate = location.coordinate {
 //                    Annotation(

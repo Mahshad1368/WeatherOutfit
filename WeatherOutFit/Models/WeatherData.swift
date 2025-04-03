@@ -21,6 +21,10 @@ public struct WeatherResponse: Codable {
         self.wind = wind
         self.dt = dt
     }
+    // Computed property for weatherCondition
+        var weatherCondition: String {
+            weather.first?.main ?? "Sunny" // Adjust based on your data structure
+        }
 }
 
 public struct Main: Codable {
